@@ -18,7 +18,7 @@ public class Write {
         {
             for (var item : map.entrySet()){
                 double procent = ((double)item.getValue() / (double)capacityWords) * 100;
-                writer.write(item.getKey() + ";" + item.getValue() + ";" + procent + "%");
+                writer.write(item.getKey() + ";" + item.getValue() + ";" + procent + "%" + "\n");
                 writer.flush();
             }
         }

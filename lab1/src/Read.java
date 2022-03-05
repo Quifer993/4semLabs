@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 /////////////
 import java.io.BufferedReader;
@@ -13,7 +14,7 @@ public class Read {
     int capacityDifferentWords;
 
     Read() {
-        // smth strange
+        readMap = new HashMap<>();
         capacityWords = 0;
         capacityDifferentWords = 0;
     };
@@ -28,7 +29,6 @@ public class Read {
             String inputString;
             while ((inputString = reader.readLine()) != null) {
 
-                String text = "Егор Алла Александр";
                 Pattern pattern = Pattern.compile("[\\da-zA-Zа-яА-Я]+");
                 Matcher matcher = pattern.matcher(inputString);
                 while (matcher.find()) {
@@ -43,7 +43,6 @@ public class Read {
                         readMap.put(newWord, 1);
                         capacityDifferentWords++;
                     }
-                    System.out.println(inputString.substring(matcher.start(), matcher.end()));
                 }
             }
         }
