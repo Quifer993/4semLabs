@@ -8,11 +8,22 @@ import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.Stack;
 
-public class PushOperation implements IWorker {
+/**
+ * Class realizes push to stack
+ * @see IOperation
+ */
+public class PushOperation implements IOperation {
         private static final Logger logger = LogManager.getLogger(ru.nsu.zolotorevskii.lab2.workers.PushOperation.class);
         private static final int VALUE_PARAM = 0;
         public PushOperation(){}
 
+    /**
+     * Method realized push to stack
+     * @param stack Стэк чисел с которым работает программа
+     * @param variables Параметры для работы операции
+     * @param parameters Параметры, задефайненые с помощью класса DefineOperation
+     * @param writer Для записи в файл результата операции
+     */
         @Override
         public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
             double num;

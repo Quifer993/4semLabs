@@ -2,8 +2,7 @@ package ru.nsu.zolotorevskii.lab2;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.nsu.zolotorevskii.lab2.workers.IWorker;
-import ru.nsu.zolotorevskii.lab2.workers.PopOperation;
+import ru.nsu.zolotorevskii.lab2.workers.IOperation;
 
 import java.io.*;
 import java.util.*;
@@ -11,7 +10,9 @@ import ru.nsu.zolotorevskii.lab2.exceptions.amountOfParametersException;
 
 import static ru.nsu.zolotorevskii.lab2.Constants.*;
 
-
+/**
+ * Class that contains Scanner and Writer, map of parameters that was defined due to DefineOperation
+ */
 public class Calc {
     private static final String EXIT = "exit";
     private static final int SHIFT = 1;
@@ -24,6 +25,12 @@ public class Calc {
     Scanner reader;
     PrintWriter writer;
 
+    /**
+     * Creates map of parameters, Scanner and Writer.
+     * @param nameZone area, where will work Calculator
+     * @param args cli arguments
+     * @see Calc#execute()
+     */
     Calc(String nameZone, String[] args) {
         parameters = new HashMap<>();
         workZone = nameZone;
@@ -43,6 +50,10 @@ public class Calc {
         }
     }
 
+    /**
+     * Parse input and Calculating with operation, implemented from IOperation
+     * @see IOperation
+     */
     public void execute() {
         logger.info("Start work calculate`s execute");
 
@@ -57,7 +68,7 @@ public class Calc {
                 }
                 String[] partsOfLine = workLine.trim().split(SPACE);
 
-                IWorker worker = factory.getWorker(partsOfLine[POS_NAME_OPERATION]);
+                IOperation worker = factory.getWorker(partsOfLine[POS_NAME_OPERATION]);
 
                 if (partsOfLine.length - SHIFT < worker.getNumberOfParams()) {
                     throw new amountOfParametersException(partsOfLine.length - SHIFT, worker.getNumberOfParams());

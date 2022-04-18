@@ -19,7 +19,7 @@ import static ru.nsu.zolotorevskii.lab2.Constants.*;
  */
 public class Factory {
     private static final Logger logger = LogManager.getLogger(Factory.class);
-    private Map<String, IWorker> workerMap;
+    private Map<String, IOperation> workerMap;
 
     /**
      * Create workers for calculator
@@ -33,7 +33,7 @@ public class Factory {
                 String[] arguments = line.trim().split(SPACE);
                 Class worker = Class.forName(arguments[CLASS_PATH_POS]);
                 if (!workerMap.containsKey(arguments[OPERATION_POS])) {
-                    IWorker work = (IWorker) worker.newInstance();
+                    IOperation work = (IOperation) worker.newInstance();
                     workerMap.put(arguments[OPERATION_POS], work);
                 }
                 else {
@@ -55,11 +55,11 @@ public class Factory {
 
 
     /**
-     * Return worker(IWorker) from the map of operations
+     * Return worker(IOperation) from the map of operations
      * @param operation name of operation, that will take from the mapWorker
      * @return Return worker whose name called
      */
-    public IWorker getWorker(String operation) {
+    public IOperation getWorker(String operation) {
         if (workerMap.containsKey(operation)) {
             return workerMap.get(operation);
         }

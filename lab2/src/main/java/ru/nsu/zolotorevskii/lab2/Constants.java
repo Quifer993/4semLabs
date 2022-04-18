@@ -14,5 +14,4 @@ public final class Constants {
     public static final String SPACE = "[\s]+";
     public static final String WORKER_NAMES_FILE =
             "src/main/java/ru/nsu/zolotorevskii/lab2/workers/workersNames.txt";
-
 }
