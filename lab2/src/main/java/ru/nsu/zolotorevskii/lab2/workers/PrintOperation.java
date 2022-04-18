@@ -12,11 +12,7 @@ import java.util.Stack;
 public class PrintOperation implements IWorker{
     private static final Logger logger = LogManager.getLogger(PrintOperation.class);
 
-
-
-    public PrintOperation(){
-
-    }
+    public PrintOperation(){}
 
     @Override
     public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
@@ -32,13 +28,10 @@ public class PrintOperation implements IWorker{
         catch(EmptyStackException e){
             logger.error("Stack is empty");
         }
-
-
     }
 
     @Override
     public int getNumberOfParams() {
         return 0;
     }
-
 }

@@ -4,6 +4,7 @@ public final class Constants {
     public static final int ALL_ARGS_FILES = 2;
     public static final int INPUT_FILE = 0;
     public static final int OUTPUT_FILE = 1;
+    public static final int POS_NAME_OPERATION = 0;
     public static final String StdinCalc = "stream";
     public static final String FileCalc = "file";
     public static final int END = 100;

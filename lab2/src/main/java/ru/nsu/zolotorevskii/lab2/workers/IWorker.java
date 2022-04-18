@@ -7,5 +7,4 @@ import java.util.Stack;
 public interface IWorker {
     void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer);
     int getNumberOfParams();
-
 }

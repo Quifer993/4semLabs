@@ -10,9 +10,7 @@ import java.util.Stack;
 public class SubOperation implements IWorker{
     private static final Logger logger = LogManager.getLogger(SubOperation.class);
 
-    public SubOperation() {
-
-    }
+    public SubOperation() {}
 
     @Override
     public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws ArithmeticException {

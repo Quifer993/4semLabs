@@ -10,9 +10,7 @@ import java.util.Stack;
 public class SqrtOperation implements IWorker {
     private static final Logger logger = LogManager.getLogger(SqrtOperation.class);
 
-    public SqrtOperation() {
-
-    }
+    public SqrtOperation() {}
 
     @Override
     public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws ArithmeticException {
@@ -22,7 +20,6 @@ public class SqrtOperation implements IWorker {
             logger.error("Stack have only 1 number");
         } else {
             Double lastElem = stack.pop();
-//            Double f1 = new Double(lastElem);
             if(lastElem.isNaN() || lastElem < 0 || lastElem.isInfinite()){
                 throw new ArithmeticException();
             }
@@ -34,6 +31,4 @@ public class SqrtOperation implements IWorker {
     public int getNumberOfParams() {
         return 0;
     }
-
-
 }

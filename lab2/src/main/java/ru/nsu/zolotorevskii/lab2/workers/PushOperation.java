@@ -10,10 +10,8 @@ import java.util.Stack;
 
 public class PushOperation implements IWorker {
         private static final Logger logger = LogManager.getLogger(ru.nsu.zolotorevskii.lab2.workers.PushOperation.class);
-
-        public PushOperation(){
-
-        }
+        private static final int VALUE_PARAM = 0;
+        public PushOperation(){}
 
         @Override
         public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
@@ -23,7 +21,7 @@ public class PushOperation implements IWorker {
                 stack.push(num);
             }
             catch(NumberFormatException e) {
-                String pushElem = variables[0];
+                String pushElem = variables[VALUE_PARAM];
                 logger.info("elem is not a number. Checking parameter in the map...");
                 if(parameters.containsKey(pushElem)){
                     num = parameters.get(pushElem);

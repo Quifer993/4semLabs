@@ -10,9 +10,7 @@ import java.util.Stack;
 public class MulOperation implements IWorker{
     private static final Logger logger = LogManager.getLogger(MulOperation.class);
 
-    public MulOperation() {
-
-    }
+    public MulOperation() {}
 
     @Override
     public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws ArithmeticException {
