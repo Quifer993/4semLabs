@@ -25,7 +25,7 @@ public class PopOperation implements IOperation {
      * @param writer Для записи в файл результата операции
      */
     @Override
-    public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
+    public void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer) throws EmptyStackException {
         try{
             stack.pop();
         }catch(EmptyStackException e){

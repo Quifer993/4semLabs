@@ -26,7 +26,7 @@ public class DefineOperation implements IOperation {
      * @param writer Для записи в файл результата операции
      */
     @Override
-    public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) {
+    public void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer) {
         try{
             Double.parseDouble(variables[NAME_PARAM]);
             logger.error("Define parameter is a number! Use smth else");

@@ -25,7 +25,7 @@ public class SubOperation implements IOperation {
      * @param writer Для записи в файл результата операции
      */
     @Override
-    public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws ArithmeticException {
+    public void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer) throws ArithmeticException {
         if (stack.size() == 0) {
             logger.error("Stack is empty");
         } else if (stack.size() == 1) {

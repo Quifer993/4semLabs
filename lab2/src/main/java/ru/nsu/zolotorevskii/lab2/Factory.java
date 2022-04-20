@@ -24,7 +24,7 @@ public class Factory {
     /**
      * Create workers for calculator
      */
-    Factory(){
+    public Factory(){
         workerMap = new HashMap<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(WORKER_NAMES_FILE));

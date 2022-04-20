@@ -25,7 +25,7 @@ public class PushOperation implements IOperation {
      * @param writer Для записи в файл результата операции
      */
         @Override
-        public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
+        public void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer) throws EmptyStackException {
             double num;
             try {
                 num = Double.parseDouble(variables[0]);

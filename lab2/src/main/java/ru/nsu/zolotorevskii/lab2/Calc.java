@@ -31,7 +31,7 @@ public class Calc {
      * @param args cli arguments
      * @see Calc#execute()
      */
-    Calc(String nameZone, String[] args) {
+    public Calc(String nameZone, String[] args) {
         parameters = new HashMap<>();
         workZone = nameZone;
         try {

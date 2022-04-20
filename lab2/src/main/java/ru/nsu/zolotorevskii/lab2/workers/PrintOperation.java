@@ -27,10 +27,9 @@ public class PrintOperation implements IOperation {
      * @param writer Для записи в файл результата операции
      */
     @Override
-    public void work(Stack<Double> stack, String variables[], Map<String, Double> parameters, Writer writer) throws EmptyStackException {
+    public void work(Stack<Double> stack, String[] variables, Map<String, Double> parameters, Writer writer) throws EmptyStackException {
         try{
-            Double lastElem = stack.peek();
-            String line = "Top element is: " + lastElem + System.lineSeparator();
+            String line = stack.peek() + System.lineSeparator();
             writer.write(line);
             writer.flush();
         }
