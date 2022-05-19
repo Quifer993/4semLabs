@@ -12,7 +12,17 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="borderPane" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #E0E0E0; -fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.GameController">
-   <top>
+   <center>
+      <GridPane fx:id="gridPane" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clickedGridPane" prefHeight="30.0" prefWidth="30.0" style="-fx-spacing: 0;" BorderPane.alignment="TOP_LEFT">
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+         </columnConstraints>
+      </GridPane>
+   </center>
+   <bottom>
       <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="600.0" style="-fx-spacing: 10;" BorderPane.alignment="CENTER">
          <children>
             <Text fx:id="nameLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
@@ -42,7 +52,7 @@
                   <Insets />
                </HBox.margin>
             </Text>
-            <MenuButton alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="...">
+            <MenuButton alignment="TOP_LEFT" mnemonicParsing="false" popupSide="TOP" prefHeight="26.0" prefWidth="55.0" text="...">
               <items>
                 <MenuItem fx:id="buttonMenu" mnemonicParsing="false" onAction="#clickedMenu" text="Меню" />
                 <MenuItem fx:id="buttonExitGame" mnemonicParsing="false" onAction="#clickedExitGame" text="Выход" />
@@ -50,15 +60,5 @@
             </MenuButton>
          </children>
       </HBox>
-   </top>
-   <center>
-      <GridPane fx:id="gridPane" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clickedGridPane" prefHeight="30.0" prefWidth="30.0" style="-fx-spacing: 0;" BorderPane.alignment="TOP_LEFT">
-        <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <columnConstraints>
-            <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-         </columnConstraints>
-      </GridPane>
-   </center>
+   </bottom>
 </BorderPane>

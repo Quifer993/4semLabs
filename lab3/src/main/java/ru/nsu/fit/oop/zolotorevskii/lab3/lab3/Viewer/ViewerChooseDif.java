@@ -1,11 +1,5 @@
-package ru.nsu.fit.oop.zolotorevskii.lab3.lab3;
+package ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Viewer;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,11 +8,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerMainMenu;
+import ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.GameController;
+import ru.nsu.fit.oop.zolotorevskii.lab3.lab3.model.ParamGame;
 
-import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ControllerChooseDif {
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.Constants.PATH_GAME_CONTROLLER_FXML;
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.Constants.PATH_MAIN_MENU_FXML;
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.PathImages.IMAGE_X;
 
+public class ViewerChooseDif{
     @FXML
     private ResourceBundle resources;
 
@@ -49,70 +52,28 @@ public class ControllerChooseDif {
     @FXML
     private Button buttonPersonal;
 
-    @FXML
-    void ClickedBackMainMenu(ActionEvent event) throws IOException {
-        Launcher.launchNewWindow(getClass(), "MainMenu.fxml");
+    public void loadMainMenu(String name) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PATH_MAIN_MENU_FXML));
+        Parent root = fxmlLoader.load();
+        ControllerMainMenu controllerMainMenu = fxmlLoader.getController();
+        controllerMainMenu.setName(name);
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) buttonBack.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
-    @FXML
-    void ClickedEaseGame(MouseEvent event) throws IOException {
-        Map<String, Integer> paramsOfGame = new HashMap<>();
-        paramsOfGame.put(HEIGHT, 9);
-        paramsOfGame.put(LENGTH, 9);
-        paramsOfGame.put(MINES, 1);
-        startGame(EASY, paramsOfGame);
-
+    public String getHeight() {
+        return buttonHeight.getText();
     }
 
-    @FXML
-    void ClickedHardGame(MouseEvent event) throws IOException {
-        Map<String, Integer> paramsOfGame = new HashMap<>();
-        paramsOfGame.put(HEIGHT, 15);
-        paramsOfGame.put(LENGTH, 15);
-        paramsOfGame.put(MINES, 37);
-        startGame(HARD, paramsOfGame);
+    public String getLenght() {
+        return buttonLength.getText();
     }
 
-    @FXML
-    void ClickedMediumGame(MouseEvent event) throws IOException {
-        Map<String, Integer> paramsOfGame = new HashMap<>();
-        paramsOfGame.put(HEIGHT, 12);
-        paramsOfGame.put(LENGTH, 12);
-        paramsOfGame.put(MINES, 25);
-        startGame(MEDIUM, paramsOfGame);
-    }
-
-    @FXML
-    void ClickedPersonalGame(MouseEvent event) throws IOException {
-        boolean isNumCorrect = true;
-        Map<String, Integer> paramsOfGame = new HashMap<>();
-        try{
-            int height = Integer.parseInt(buttonHeight.getText());
-            if(height > 22) height =22;
-            paramsOfGame.put(HEIGHT,height );
-        }catch(NumberFormatException e){
-            isNumCorrect = false;
-        }
-        try{
-            int length = Integer.parseInt(buttonLength.getText());
-            if(length > 40) length =40;
-            paramsOfGame.put(LENGTH, length);
-        }catch(NumberFormatException e){
-            isNumCorrect = false;
-        }
-        try{
-            paramsOfGame.put(MINES, Integer.parseInt(buttonCountMines.getText()));
-        }catch(NumberFormatException e){
-            isNumCorrect = false;
-        }
-
-        if(paramsOfGame.get(HEIGHT) * paramsOfGame.get(LENGTH) <= paramsOfGame.get(MINES) ){
-            isNumCorrect = false;
-        }
-
-        if(isNumCorrect){
-            startGame(PERSONAL, paramsOfGame);
-        }
+    public String getMines() {
+        return buttonCountMines.getText();
     }
 
     @FXML
@@ -180,22 +141,28 @@ public class ControllerChooseDif {
         assert buttonPersonal != null : "fx:id=\"buttonPersonal\" was not injected: check your FXML file 'chooseDifficulty.fxml'.";
 
     }
-    private void startGame(String typeGame, Map<String, Integer> paramsOfGame) throws IOException {
-        Game game = new Game(typeGame, paramsOfGame);
-        game.startGame(typeGame, paramsOfGame);
-        FXMLLoader fxmlLoader = new FXMLLoader(GameApplication.class.getResource("GameController.fxml"));
+
+    public void loadGameWindow(ParamGame paramsGame) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(GameApplication.class.getResource(PATH_GAME_CONTROLLER_FXML));
         Parent root = fxmlLoader.load();
         GameController controller = fxmlLoader.getController();
+        controller.setGameParams(paramsGame);
+        Stage stage =(Stage) buttonEasy.getScene().getWindow();
+        stage.setX(0);
+        stage.setY(0);
+        stage.setHeight(300);
+        stage.setWidth(300);
 
-        controller.setParams(Game.name,  paramsOfGame, typeGame);
+        if((paramsGame.getLength() + 1) * IMAGE_X > stage.getWidth()){
+            stage.setWidth((paramsGame.getLength() + 1) * IMAGE_X );
+        }
 
-//        if((length + 1) * IMAGE_X > controller.getBorderPaneLength()){
-//            controller.setBorderPaneLength((double)((length + 1) * IMAGE_X ));
-//        }
+        if((paramsGame.getHeight() + 1) * IMAGE_X > stage.getHeight()){
+            stage.setHeight(((paramsGame.getHeight() + 3) * IMAGE_X ));
+        }
 
         Scene scene = new Scene(root);
-        GameApplication.stage.setScene(scene);
-        GameApplication.stage.show();
+        stage.setScene(scene);
+        stage.show();
     }
-
 }

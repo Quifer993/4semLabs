@@ -1,16 +1,13 @@
-package ru.nsu.fit.oop.zolotorevskii.lab3.lab3;
+package ru.nsu.fit.oop.zolotorevskii.lab3.lab3.model;
 
-import java.util.Map;
-
-import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.*;
-import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.TypeCell.*;
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.TypeCell.*;
 
 public class Field {
     private final int[][] matrixField;
 
-    public Field(Map<String, Integer> paramsOfGame, int empty) {
-        int length = paramsOfGame.get(LENGTH);
-        int height = paramsOfGame.get(HEIGHT);
+    public Field(ParamGame paramsGame, int empty) {
+        int length = paramsGame.getLength();
+        int height = paramsGame.getHeight();
         matrixField = new int[length][height];
         for(int i = 0; i < length; i++) {
             for (int j = 0; j < height; j++) {
@@ -28,10 +25,10 @@ public class Field {
         matrixField[column][row] = type;
     }
 
-    Field( Map<String, Integer> paramsOfGame){
-        int length = paramsOfGame.get(LENGTH);
-        int height = paramsOfGame.get(HEIGHT);
-        int mines = paramsOfGame.get(MINES);
+    public Field(ParamGame paramsGame){
+        int length = paramsGame.getLength();
+        int height = paramsGame.getHeight();
+        int mines = paramsGame.getMines();
         matrixField = new int[length][height];
         for(int i = 0; i < length; i++){
             for(int j = 0; j < height; j++){

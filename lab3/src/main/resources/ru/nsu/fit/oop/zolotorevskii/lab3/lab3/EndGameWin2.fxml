@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane fx:id="buttonEndGame" style="-fx-border-width: 8; -fx-border-color: black;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.EndGameWinController">
+<DialogPane fx:id="buttonEndGame" style="-fx-border-width: 8; -fx-border-color: #ffd7f0ack; -fx-background-color: #ffd7af;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.EndGameWinController">
    <content>
       <VBox alignment="CENTER" prefHeight="306.0" prefWidth="216.0" style="-fx-spacing: 30;">
          <children>
-            <Text fill="#ae5b5b" strokeType="OUTSIDE" strokeWidth="0.0" text="Победа!">
+            <Text fill="#ae5b5b" strokeType="OUTSIDE" strokeWidth="0.0" text="КАПЕЦ ТЫ ЖОСКИЙ!">
                <font>
                   <Font size="52.0" />
                </font>

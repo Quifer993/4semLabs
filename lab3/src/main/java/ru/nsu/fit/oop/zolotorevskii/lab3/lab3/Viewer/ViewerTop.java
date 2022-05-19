@@ -1,10 +1,5 @@
-package ru.nsu.fit.oop.zolotorevskii.lab3.lab3;
+package ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Viewer;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,10 +7,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerMainMenu;
+import ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerTopOpen;
 
-import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ControllerTop {
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.Constants.PATH_MAIN_MENU_FXML;
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.Constants.PATH_TOP_OPEN_FXML;
+
+public class ViewerTop{
 
     @FXML
     private ResourceBundle resources;
@@ -36,35 +39,29 @@ public class ControllerTop {
     private Button buttonMedium;
 
 
-    private void openTop(String type) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TopOpen.fxml"));
+    protected void loadTopOpen(String type, String name) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PATH_TOP_OPEN_FXML));
         Parent root = fxmlLoader.load();
         ControllerTopOpen controller = fxmlLoader.getController();
         controller.setText(type);
+        controller.setName(name);
+        Stage stage = (Stage) buttonEasy.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    public void loadMainMenu(String name) throws IOException {
+        Stage stage = (Stage) buttonEasy.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PATH_MAIN_MENU_FXML));
+        Parent root = fxmlLoader.load();
+        ControllerMainMenu controllerMainMenu = fxmlLoader.getController();
+        controllerMainMenu.setName(name);
 
         Scene scene = new Scene(root);
-        GameApplication.stage.setScene(scene);
-        GameApplication.stage.show();
-    }
-
-    @FXML
-    void ClickedEasy(MouseEvent event) throws IOException {
-        openTop(EASY);
-    }
-
-    @FXML
-    void clickedBack(MouseEvent event) throws IOException {
-        Launcher.launchNewWindow(getClass(), "MainMenu.fxml");
-    }
-
-    @FXML
-    void clickedHard(MouseEvent event) throws IOException {
-        openTop(HARD);
-    }
-
-    @FXML
-    void clickedMedium(MouseEvent event) throws IOException {
-        openTop(MEDIUM);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

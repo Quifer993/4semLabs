@@ -1,4 +1,4 @@
-package ru.nsu.fit.oop.zolotorevskii.lab3.lab3;
+package ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants;
 
 public class TypeCell {
     public static final int NULL = 0;

@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #cfd75f; -fx-border-color: #2a5a20; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerTopOpen">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #ffd7f0; -fx-border-color: #2a5a20; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerTopOpen">
    <children>
       <Button fx:id="buttonBack" layoutX="110.0" layoutY="446.0" mnemonicParsing="false" onMouseClicked="#clickedBack" onMouseEntered="#mouseInBack" onMouseExited="#mouseOutBack" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Назад" textAlignment="CENTER" textFill="#cfd75f">
          <font>

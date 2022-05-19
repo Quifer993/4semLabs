@@ -1,12 +1,13 @@
-package ru.nsu.fit.oop.zolotorevskii.lab3.lab3;
+package ru.nsu.fit.oop.zolotorevskii.lab3.lab3.model;
 
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.*;
+import static ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Constants.Constants.*;
 
 public class TimerGame {
     Timer timer = new Timer("MyTimer");
@@ -18,9 +19,10 @@ public class TimerGame {
     }
 
     public void timerGo(Text timeLabel) {
+        Stage stage = (Stage) timeLabel.getScene().getWindow();
+        stage.setOnCloseRequest(event -> this.shutdown());
         TimerTask timerTask = new TimerTask() {
             DecimalFormat df = new DecimalFormat("#.##");
-//            GameApplication.stage.setOnCloseRequest();
 
             @Override
             public void run() {
