@@ -1,9 +1,0 @@
-POP ru.nsu.zolotorevskii.lab2.workers.PopOperation
-PUSH ru.nsu.zolotorevskii.lab2.workers.PushOperation
-+ ru.nsu.zolotorevskii.lab2.workers.AddOperation
-- ru.nsu.zolotorevskii.lab2.workers.SubOperation
-* ru.nsu.zolotorevskii.lab2.workers.MulOperation
-/ ru.nsu.zolotorevskii.lab2.workers.DivOperation
-SQRT ru.nsu.zolotorevskii.lab2.workers.SqrtOperation
-PRINT ru.nsu.zolotorevskii.lab2.workers.PrintOperation
-DEFINE ru.nsu.zolotorevskii.lab2.workers.DefineOperation

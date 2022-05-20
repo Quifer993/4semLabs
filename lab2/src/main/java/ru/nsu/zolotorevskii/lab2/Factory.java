@@ -4,12 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.nsu.zolotorevskii.lab2.workers.*;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static ru.nsu.zolotorevskii.lab2.Constants.*;
 
@@ -27,7 +25,11 @@ public class Factory {
     public Factory(){
         workerMap = new HashMap<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(WORKER_NAMES_FILE));
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            Objects.requireNonNull(getClass().getResourceAsStream(
+                                    WORKER_NAMES_FILE
+                            ))));
             String line = reader.readLine();
             while (line != null) {
                 String[] arguments = line.trim().split(SPACE);

@@ -12,6 +12,5 @@ public final class Constants {
     public static final int CLASS_PATH_POS = 1;
     public static final int OPERATION_POS = 0;
     public static final String SPACE = "[\s]+";
-    public static final String WORKER_NAMES_FILE =
-            "src/main/java/ru/nsu/zolotorevskii/lab2/workers/workersNames.txt";
+    public static final String WORKER_NAMES_FILE = "/workersNames.txt";
 }
