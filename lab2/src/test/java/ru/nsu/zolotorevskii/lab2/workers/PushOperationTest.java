@@ -22,4 +22,17 @@ public class PushOperationTest {
 
         assertEquals((Double)5.0, stack.peek());
     }
+
+    @Test
+    public void errorWork() {
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(50);
+        Map<String, Double> parameters = new HashMap<>();
+
+        String[] variablesPop = {"a"};
+        IOperation block = new PushOperation();
+        block.work(stack, variablesPop, parameters, writer);
+
+        assertTrue(stack.isEmpty());
+    }
 }

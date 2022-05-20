@@ -20,9 +20,26 @@ public class AddOperationTest {
         stack.push(10.0);
 
         String[] variablesDiv = {};
-        IOperation divBlock = new AddOperation();
-        divBlock.work(stack, variablesDiv, parameters, writer);
+        IOperation addBlock = new AddOperation();
+        addBlock.work(stack, variablesDiv, parameters, writer);
 
         assertEquals((Double)15.0, stack.peek());
     }
+
+    @Test
+    public void work1() {
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(50);
+        Map<String, Double> parameters = new HashMap<>();
+
+        stack.push(5.0);
+//        stack.push(10.0);
+
+        String[] variablesDiv = {};
+        IOperation addBlock = new AddOperation();
+
+        addBlock.work(stack, variablesDiv, parameters, writer);
+        assertEquals((Double)5.0, stack.peek());
+    }
+
 }

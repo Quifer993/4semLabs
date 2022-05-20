@@ -25,4 +25,17 @@ public class PrintOperationTest {
         String result = writer.toString();
         assertTrue(result.trim().equalsIgnoreCase("5.0\n".trim()));
     }
+
+    @Test
+    public void errorWork() {
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(7);
+        Map<String, Double> parameters = new HashMap<>();
+
+        String[] variablesPrint = {};
+        IOperation printBlock = new PrintOperation();
+        printBlock.work(stack, variablesPrint, parameters, writer);
+        String result = writer.toString();
+        assertTrue(result.trim().equalsIgnoreCase("".trim()));
+    }
 }

@@ -31,7 +31,13 @@ public class DivOperation implements IOperation {
         } else if (stack.size() == 1) {
             logger.error("Stack have only 1 number");
         } else {
-            stack.push(stack.pop() / stack.pop());
+            Double first = stack.pop();
+            Double second = stack.pop();
+            Double res = first / second;
+            if(res.isNaN() || res.isInfinite()){
+                throw new ArithmeticException();
+            }
+            stack.push(res);
         }
     }
 

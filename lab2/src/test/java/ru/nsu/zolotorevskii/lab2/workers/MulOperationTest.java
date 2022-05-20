@@ -25,4 +25,19 @@ public class MulOperationTest {
 
         assertEquals((Double)50.0, stack.peek());
     }
+
+    @Test
+    public void errorWork() {
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(50);
+        Map<String, Double> parameters = new HashMap<>();
+
+        stack.push(5.0);
+
+        String[] variablesDiv = {};
+        IOperation divBlock = new MulOperation();
+        divBlock.work(stack, variablesDiv, parameters, writer);
+
+        assertEquals((Double)5.0, stack.peek());
+    }
 }

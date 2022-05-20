@@ -30,4 +30,26 @@ public class DefineOperationTest {
 
         assertEquals((Double)5.0, stack.peek());
     }
+
+    @Test
+    public void errorWork() {
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(50);
+        Map<String, Double> parameters = new HashMap<>();
+
+        String[] variablesDefine = {"TestParam", "g5"};
+        IOperation defineBlock = new DefineOperation();
+        defineBlock.work(stack, variablesDefine, parameters, writer);
+
+        String[] variablesPush = {"TestParam"};
+        IOperation pushBlock = new PushOperation();
+        pushBlock.work(stack, variablesPush, parameters, writer);
+
+        String[] variablesPrint = {};
+        IOperation printBlock = new PrintOperation();
+        printBlock.work(stack, variablesPrint, parameters, writer);
+
+        assertTrue(stack.isEmpty());
+
+    }
 }

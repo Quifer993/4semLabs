@@ -24,4 +24,26 @@ public class SqrtOperationTest {
 
         assertEquals((Double)2.0, stack.peek());
     }
+
+    @Test
+    public void errorWork() {
+        boolean isError = true;
+        Stack<Double> stack = new Stack<>();
+        StringWriter writer = new StringWriter(50);
+        Map<String, Double> parameters = new HashMap<>();
+
+        stack.push(-2.0);
+
+        String[] variables = {};
+        IOperation block = new SqrtOperation();
+        try{
+            block.work(stack, variables, parameters, writer);
+        }catch (ArithmeticException e){
+            isError = false;
+        }
+
+        if(isError){
+            fail();
+        }
+    }
 }
