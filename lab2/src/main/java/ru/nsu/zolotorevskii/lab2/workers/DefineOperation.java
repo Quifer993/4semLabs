@@ -30,11 +30,10 @@ public class DefineOperation implements IOperation {
         try{
             Double.parseDouble(variables[NAME_PARAM]);
             logger.error("Define parameter is a number! Use smth else");
-            parameters.put(variables[NAME_PARAM], Double.parseDouble(variables[1]));
         }
         catch(NumberFormatException e){
             try{
-
+                parameters.put(variables[NAME_PARAM], Double.parseDouble(variables[1]));
             }
             catch(NumberFormatException e1){
                 logger.error( variables[VALUE_PARAM] + " is not a number!");
