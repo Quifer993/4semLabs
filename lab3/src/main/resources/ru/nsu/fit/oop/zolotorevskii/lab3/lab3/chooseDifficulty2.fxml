@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #ffd7f0; -fx-border-color: #2a5a20; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerChooseDif">
+   <children>
+      <Text fill="#278113" layoutX="87.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sapper" wrappingWidth="224.81951904296875">
+         <font>
+            <Font size="66.0" />
+         </font>
+      </Text>
+      <VBox layoutX="17.0" layoutY="194.0" prefHeight="262.0" prefWidth="182.0" style="-fx-spacing: 15;">
+         <children>
+            <Button fx:id="buttonEasy" mnemonicParsing="false" onMouseClicked="#ClickedEasyGame" onMouseEntered="#mouseInEaseGame" onMouseExited="#mouseOutEaseGame" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Легко" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonMedium" mnemonicParsing="false" onMouseClicked="#ClickedMediumGame" onMouseEntered="#mouseInMediumGame" onMouseExited="#mouseOutMediumGame" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Средне" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonHard" mnemonicParsing="false" onMouseClicked="#ClickedHardGame" onMouseEntered="#mouseInHardGame" onMouseExited="#mouseOutHardGame" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Сложно" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonPersonal" mnemonicParsing="false" onMouseClicked="#ClickedPersonalGame" onMouseEntered="#mouseInPersonalGame" onMouseExited="#mouseOutPersonalGame" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Персональная" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#ClickedBackMainMenu" onMouseClicked="#ClickedBackMainMenu" onMouseEntered="#mouseInBack" onMouseExited="#mouseOutBack" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Назад" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+            </Button>
+         </children>
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <TextField fx:id="buttonHeight" layoutX="203.0" layoutY="376.0" promptText="Высота" />
+      <TextField fx:id="buttonLength" layoutX="203.0" layoutY="402.0" promptText="Длина" />
+      <TextField fx:id="buttonCountMines" layoutX="203.0" layoutY="428.0" promptText="Кол-во мин" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+
+<DialogPane fx:id="buttonEndGame" contentText="КОНЕЦ ИГРЫ" headerText="Finish" style="-fx-border-width: 8; -fx-border-color: black;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.EndGameLoseController">
+   <graphic>
+      <Button fx:id="buttonClose" alignment="CENTER" contentDisplay="TOP" layoutY="20.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#clickedButtonClose" prefHeight="30.0" prefWidth="149.0" text="Вернуться в меню" textFill="#00bfff">
+         <font>
+            <Font size="15.0" />
+         </font>
+         <effect>
+            <Glow />
+         </effect>
+      </Button>
+   </graphic>
+</DialogPane>

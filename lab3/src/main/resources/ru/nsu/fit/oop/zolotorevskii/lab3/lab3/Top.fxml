@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #cfd75f; -fx-border-color: #2a5a20; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab3.lab3.Controllers.ControllerTop">
+   <children>
+      <Text fill="#278113" layoutX="87.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sapper" wrappingWidth="224.81951904296875">
+         <font>
+            <Font size="66.0" />
+         </font>
+      </Text>
+      <Text fill="#5246f7" layoutX="117.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Лучшие">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Text>
+      <VBox alignment="CENTER" layoutX="87.0" layoutY="245.0" prefHeight="265.0" prefWidth="225.0" style="-fx-spacing: 10;">
+         <children>
+            <Button fx:id="buttonEasy" mnemonicParsing="false" onMouseClicked="#ClickedEasy" onMouseEntered="#mouseInEasy" onMouseExited="#mouseOutEasy" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Легкий" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="buttonMedium" mnemonicParsing="false" onMouseClicked="#clickedMedium" onMouseEntered="#mouseInMedium" onMouseExited="#mouseOutMedium" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Средний" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="buttonHard" mnemonicParsing="false" onMouseClicked="#clickedHard" onMouseEntered="#mouseInHard" onMouseExited="#mouseOutHard" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Сложный" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="buttonBack" mnemonicParsing="false" onMouseClicked="#clickedBack" onMouseEntered="#mouseInBack" onMouseExited="#mouseOutBack" prefHeight="52.0" prefWidth="180.0" style="-fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #253530; -fx-border-color: silver;" text="Назад" textAlignment="CENTER" textFill="#cfd75f">
+               <font>
+                  <Font name="System Italic" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
