@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.fit.oop.zolotorevskii.lab5.Controller.EnterLoginController">
+   <children>
+      <Pane layoutX="-7.0" minHeight="-Infinity" prefHeight="140.0" prefWidth="410.0" style="-fx-background-color: #5a55ff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text fill="#dfdfdf" layoutX="144.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="log in">
+               <font>
+                  <Font size="45.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <TextField fx:id="loginLabel" layoutX="108.0" layoutY="322.0" onKeyPressed="#typedLoginLabel" onKeyTyped="#correctLengthName" prefHeight="26.0" prefWidth="182.0" promptText="Логин" />
+   </children>
+</AnchorPane>
