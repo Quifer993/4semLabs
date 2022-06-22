@@ -1,96 +1,63 @@
 package ru.nsu.fit.oop.zolotorevskii.lab5.Model;
 
 import com.google.gson.Gson;
+import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageServer;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageUser;
 
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.nio.channels.IllegalBlockingModeException;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
-import static ru.nsu.fit.oop.zolotorevskii.lab5.Constants.PORT_SERVER;
+import static ru.nsu.fit.oop.zolotorevskii.lab5.Constants.*;
 
 public class Client {
-    BufferedReader in;
-    BufferedWriter out;
-    public void connect() throws IOException {
-        Socket socketClient = new Socket();
-        try{
-            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
+    DataInputStream in;
+    DataOutputStream out;
+    String nameClient;
+    Socket clientSocket;
 
-            socketClient.connect(new InetSocketAddress(PORT_SERVER));
+    public Client(String name){
+        nameClient = name;
+    }
+
+    public MessageServer connect(Socket clientSocket) throws IOException {
+        this.clientSocket = clientSocket;
+            clientSocket.connect(new InetSocketAddress(PORT_SERVER));
+
+            in = new DataInputStream(clientSocket.getInputStream());
+            out = new DataOutputStream(clientSocket.getOutputStream());
+
             Gson gson = new Gson();
-            MessageUser messageUser = new MessageUser();
-            gson.toJson(messageUser);
+            MessageUser messageUser = new MessageUser(LOGIN, nameClient, "");
 
-        }catch(IllegalBlockingModeException e){
-            System.out.println("f323");
-        }catch(IOException ee){
-            System.out.println("f32");
-        }
+            String s = gson.toJson(messageUser);
+//            System.out.println(s);
 
-//        socketClient.
-        /*
-        InetAddress inetAddress = InetAddress.getLocalHost();
-        DatagramSocket client = new DatagramSocket(4321,inetAddress);
-        String string;
-        byte Ack = 0;
-        byte Seq = 0;
-        client.setSoTimeout(1500);
-        byte[] buf;
-        while(true){
-            Scanner scanner = new Scanner(System.in);
-            string = scanner.nextLine();
+            out.writeUTF(s);
+            out.flush();
+//            out.write(s);
+//            out.flush();
+//            return recieveAnswerFromServer(gson, in);
+            MessageServer answerServer = gson.fromJson(in.readUTF(), MessageServer.class);
+             answerServer.getListClients();
 
-            buf = ByteBuffer.allocate(string.length() + 2).put(string.getBytes(StandardCharsets.UTF_8)).array();
-            buf[buf.length - 1] = Ack;
-            buf[buf.length - 2] = Seq;
+            System.out.println(answerServer.getTypeMessage());
+            return answerServer;
 
-            DatagramPacket packet = new DatagramPacket(buf, string.length() + 2,inetAddress,1234);
 
-            client.send(packet);
-            byte[] bufReceive = new byte[512];
-            DatagramPacket packetReceive = new DatagramPacket(bufReceive, bufReceive.length);
-            boolean isReceive = true;
-            try{
-                client.receive(packetReceive);
-                System.out.println("Receive packet");
-            }catch(SocketTimeoutException ex){
-                isReceive = false;
-            }
+//            System.out.println("fewfe");
 
-            if(!isReceive){
-                System.out.println("Lost 1/3 packet");
-                int i;
-                for(i = 2; i < 4; i++){
-                    client.send(packet);
-                    try{
-                        client.receive(packetReceive);
-                        System.out.println("Receive " + i + "/3 packet");
-                        break;
-                    }catch(SocketTimeoutException ex1){
-                        System.out.println("Lost " + i + "/3 packet");
-                    }
-                }
-                if(i == 4){
-                    System.out.println("Server is broke or we are looser");
-                    break;
-                }
-            }
+//        return ERROR_MES;
 
-            bufReceive = packetReceive.getData();
-            String dataStr = new String(bufReceive);
-            dataStr = dataStr.substring(0, packetReceive.getLength() - 2);
+    }
 
-            Seq = bufReceive[packetReceive.getLength() - 1];
-            Ack = bufReceive[packetReceive.getLength() - 2];
-            Ack+=packetReceive.getLength() - 2;
-            System.out.println(dataStr + " SEQ=" + Seq + ", ACK=" + Ack);
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
 
-        }
-         */
+    private int recieveAnswerFromServer(Gson gson, BufferedReader in) throws IOException {
+        MessageServer answerServer = gson.fromJson(in.readLine(), MessageServer.class);
+
+        return answerServer.getTypeMessage();
     }
 }

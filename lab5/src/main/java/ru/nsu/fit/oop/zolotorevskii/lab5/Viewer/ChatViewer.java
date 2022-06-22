@@ -19,6 +19,8 @@ public class ChatViewer {
         nameClientLabel.setText(name);
     }
 
+
+
     @FXML
     void initialize() {
         assert nameClientLabel != null : "fx:id=\"nameClientLabel\" was not injected: check your FXML file 'LoginEnter.fxml'.";

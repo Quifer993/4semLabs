@@ -1,5 +1,10 @@
 package ru.nsu.fit.oop.zolotorevskii.lab5.Model;
 
+import com.google.gson.Gson;
+import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageServer;
+import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageUser;
+import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.Sending;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,129 +15,158 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static ru.nsu.fit.oop.zolotorevskii.lab5.Constants.PORT_SERVER;
+import static ru.nsu.fit.oop.zolotorevskii.lab5.Constants.*;
 
 public class Server {
-    static ExecutorService executeIt = Executors.newCachedThreadPool();
-            //newFixedThreadPool(2);
+//    ExecutorService executeIt = Executors.newCachedThreadPool();
+    //newFixedThreadPool
+    List<String> listUsers = new ArrayList<>();
+    List<Socket> listSockets = new ArrayList<>();
+    List<PairClientMessage> historyMes = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-//        boolean isServerWork = true;
-//        ServerSocket serverSocket = new ServerSocket(PORT_SERVER);
-//        InetAddress inetAddress = InetAddress.getLocalHost();
-        List<String> ListUsers = new ArrayList<>();
+    Map<Socket, String> mapUsers = new HashMap<Socket, String>();
+    boolean serverWorking;
+//    int amountClients
 
-//        while(isServerWork){
-//            try{
-//                Socket userSocket = serverSocket.accept();
-//                System.out.println();
-//                Scanner scanner = new Scanner(userSocket.getInputStream());
-//                System.out.println(scanner.next());
-//            }catch(Exception e){
-//                isServerWork = false;
-//            }
-//        }
-        try{
+    public void startServer() throws IOException {
+        serverWorking = true;
+        for (int i = 0; i < COUNT_THREADS; i++) {
+            MonoThreadClientHandler f = new MonoThreadClientHandler(i);
+            f.start();
+        }
+
+        try {
             ServerSocket server = new ServerSocket(PORT_SERVER);
             System.out.println("Server socket created");
 
             while (!server.isClosed()) {
                 Socket client = server.accept();
-                executeIt.execute(new MonoThreadClientHandler(client, ListUsers));
-                System.out.print("Connection accepted.");
+                listSockets.add(client);
+//                executeIt.execute(new MonoThreadClientHandler(client, listUsers));
+                System.out.println("Connection accepted. " + listSockets.size() );
             }
 
-            executeIt.shutdown();
+//            executeIt.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-}
-
-class MonoThreadClientHandler implements Runnable {
-
-    private static Socket clientDialog;
-
-    public MonoThreadClientHandler(Socket client, List<String> ListUsers ) {
-        MonoThreadClientHandler.clientDialog = client;
+        serverWorking = false;
     }
 
-    @Override
-    public void run() {
 
-        try {
-            // инициируем каналы общения в сокете, для сервера
+    class MonoThreadClientHandler extends Thread {
+        //    Socket clientDialog;
+        int numberThread;
 
-            // канал записи в сокет следует инициализировать сначала канал чтения для избежания блокировки выполнения программы на ожидании заголовка в сокете
-            DataOutputStream out = new DataOutputStream(clientDialog.getOutputStream());
+        public MonoThreadClientHandler(int number) {
+            numberThread = number;
+//        clientDialog = client;
+        }
 
-// канал чтения из сокета
-            DataInputStream in = new DataInputStream(clientDialog.getInputStream());
-            System.out.println("DataInputStream created");
-
-            System.out.println("DataOutputStream  created");
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // основная рабочая часть //
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // начинаем диалог с подключенным клиентом в цикле, пока сокет не
-            // закрыт клиентом
-            while (!clientDialog.isClosed()) {
-                System.out.println("Server reading from channel");
-
-                // серверная нить ждёт в канале чтения (inputstream) получения
-                // данных клиента после получения данных считывает их
-                String entry = in.readUTF();
-
-                // и выводит в консоль
-                System.out.println("READ from clientDialog message - " + entry);
-
-                // инициализация проверки условия продолжения работы с клиентом
-                // по этому сокету по кодовому слову - quit в любом регистре
-                if (entry.equalsIgnoreCase("quit")) {
-
-                    // если кодовое слово получено то инициализируется закрытие
-                    // серверной нити
-                    System.out.println("Client initialize connections suicide ...");
-                    out.writeUTF("Server reply - " + entry + " - OK");
-                    Thread.sleep(3000);
-                    break;
+        @Override
+        public void run() {
+            int dialogWithClientCount = numberThread;
+            while (serverWorking) {
+                dialogWithClientCount += COUNT_THREADS;
+                if (dialogWithClientCount >= listSockets.size()) {
+                    dialogWithClientCount = numberThread;
+                    try {
+                        sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                try {
+                    sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+//                System.out.println(listSockets.size());
+                if(listSockets.size() > dialogWithClientCount){
+                    try {
+                        Socket socketClient = listSockets.get(dialogWithClientCount);
+//                        if (socketClient.getInputStream().read() == 0) {
+//
+//                        }
+                        DataInputStream in = new DataInputStream(socketClient.getInputStream());
+                        DataOutputStream out = new DataOutputStream(socketClient.getOutputStream());
 
-                // если условие окончания работы не верно - продолжаем работу -
-                // отправляем эхо обратно клиенту
+                        if(in.available() == 0){ continue;}
 
-                System.out.println("Server try writing to channel");
-                out.writeUTF("Server reply - " + entry + " - OK");
-                System.out.println("Server Wrote message to clientDialog.");
+                        String entry = in.readUTF();
+                        Gson gson = new Gson();
+                        MessageUser messageUser = gson.fromJson(entry, MessageUser.class);
+                        System.out.println("\nREAD from clientDialog message - " + entry);
+                        MessageServer messageServer;
+                        String nickClient = messageUser.getName();
+                        if (messageUser.getTypeMessage() == LOGIN) {
+                            if (listUsers.contains(nickClient)) {
+                                messageServer = new MessageServer(LOGIN_ERROR, nickClient, listUsers, "" , null);
+                                Sending.sendMessage(out,gson.toJson(messageServer));
+                                System.out.println("Клиент " + nickClient + TEXT_NEW_CLIENT);
+                            }
+                            else{
+                                mapUsers.put(socketClient, nickClient);
+//                                historyMes.add(new PairClientMessage(nickClient, messageText));
 
-                // освобождаем буфер сетевых сообщений
-                out.flush();
+//                                messageServer = new MessageServer(LOGIN_SUCCESS, nickClient, listUsers);
+                                listUsers.add(nickClient);
 
-                // возвращаемся в началло для считывания нового сообщения
+                                sendMesAllUsers(gson, LOGIN_SUCCESS, nickClient, "", historyMes);
+                            }
+                        }
+                        else if(messageUser.getTypeMessage() == MESSAGE_TYPE){
+                            String messageText = messageUser.getMessageText();
+                            historyMes.add(new PairClientMessage(nickClient, messageText));
+                            sendMesAllUsers(gson, MESSAGE_TYPE, nickClient, messageText,null);
+                            System.out.println("Клиент " + nickClient + " отправил всем сообщение");
+                        }
+                        else if(messageUser.getTypeMessage() == LOGOUT){
+
+                            try{
+                                listSockets.remove(socketClient);
+                                mapUsers.remove(socketClient);
+                                listUsers.remove(nickClient);
+
+                                sendMesAllUsers(gson, LOGOUT, nickClient, "", null);
+                                socketClient.close();
+                                System.out.println("Клиент " + nickClient + TEXT_LOGOUT_CLIENT);
+                            }catch(NullPointerException alreadyDel){
+                                System.out.println("Socket" + socketClient.getInetAddress() + ":"
+                                        + socketClient.getPort() + " already closed!");
+                            }
+
+                            in.close();
+                            out.close();
+//                            continue;
+                        }
+
+                        System.out.println("Thread " + numberThread + " end Work with message from client correct!");
+                    } catch (IOException | NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        }
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // основная рабочая часть //
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // если условие выхода - верно выключаем соединения
-            System.out.println("Client disconnected");
-            System.out.println("Closing connections & channels.");
-
-            // закрываем сначала каналы сокета !
-            in.close();
-            out.close();
-
-            // потом закрываем сокет общения с клиентом в нити моносервера
-            clientDialog.close();
-
-            System.out.println("Closing connections & channels - DONE.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        private void sendMesAllUsers(Gson gson, int typeMes, String nickClient, String messageText, List<PairClientMessage> listPair) {
+            MessageServer messageServer = new MessageServer(typeMes, nickClient, listUsers, messageText, listPair);
+            String messageStr = gson.toJson(messageServer);
+            for(int i = 0; i < listSockets.size(); i++){
+                Socket socket = listSockets.get(i);
+                try{
+                    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                    Sending.sendMessage(out, messageStr);
+                    out.writeUTF(messageStr);
+                    out.flush();
+                }catch (IOException e) {
+                    System.out.println("send to socket: " + socket.getInetAddress() + " - error. Delete this socket from list!");
+                    listSockets.remove(socket);
+                    listUsers.remove(mapUsers.get(socket));
+                    mapUsers.remove(socket);
+                    i--;
+                }
+            }
         }
     }
 }

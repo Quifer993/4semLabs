@@ -17,6 +17,11 @@
             </Text>
          </children>
       </Pane>
-      <TextField fx:id="loginLabel" layoutX="108.0" layoutY="322.0" onKeyPressed="#typedLoginLabel" onKeyTyped="#correctLengthName" prefHeight="26.0" prefWidth="182.0" promptText="Логин" />
+      <TextField fx:id="loginLabel" layoutX="108.0" layoutY="322.0" onKeyPressed="#typedLoginLabel" prefHeight="26.0" prefWidth="182.0" promptText="Логин" />
+      <Text fx:id="textError" fill="#d70000" layoutX="42.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.4000244140625">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
