@@ -1,7 +1,6 @@
 package ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages;
 
 import ru.nsu.fit.oop.zolotorevskii.lab5.Model.PairClientMessage;
-import ru.nsu.fit.oop.zolotorevskii.lab5.Model.UserProperties;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ public class MessageServer {
     String messageText;
     List<PairClientMessage> historyMessages;
 
-    List<UserProperties> list;
     public MessageServer(int typeMessage, String nameClient, List<String> listClients, String messageText, List<PairClientMessage> listPair){
         this.typeMessage = typeMessage;
         this.name = nameClient;
