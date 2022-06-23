@@ -1,12 +1,14 @@
 package ru.nsu.fit.oop.zolotorevskii.lab5.Model;
 
-public class PairClientMessage {
+public class PartsClientMessage {
     String name;
     String message;
+    int type;
 
-    public PairClientMessage(String nickClient, String messageText){
+    public PartsClientMessage(String nickClient, String messageText, int typeMes) {
         name = nickClient;
         message = messageText;
+        type = typeMes;
     }
 
     public String getName() {
@@ -15,5 +17,9 @@ public class PairClientMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    public int getType() {
+        return type;
     }
 }

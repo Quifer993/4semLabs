@@ -32,7 +32,7 @@ import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Client;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageServer;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.MessageUser;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Model.Messages.Sending;
-import ru.nsu.fit.oop.zolotorevskii.lab5.Model.PairClientMessage;
+import ru.nsu.fit.oop.zolotorevskii.lab5.Model.PartsClientMessage;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Viewer.ChatViewer;
 import ru.nsu.fit.oop.zolotorevskii.lab5.Viewer.FirstWindowViewer;
 
@@ -334,9 +334,15 @@ public class ChatController extends ChatViewer {
         }
     }
 
-    public void showHistory(List<PairClientMessage> historyMessages) {
-        for(PairClientMessage pair : historyMessages){
-            addNewMessage(pair.getMessage(), pair.getName());
+    public void showHistory(List<PartsClientMessage> historyMessages) {
+        for(PartsClientMessage parts : historyMessages){
+            if(parts.getType() == WORK_MESSAGE){
+                showWorkMessage(parts.getMessage());
+            }
+            else if(parts.getType() == CLIENT_MESSAGE){
+                addNewMessage(parts.getMessage(), parts.getName());
+            }
+
         }
     }
 

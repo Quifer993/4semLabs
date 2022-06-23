@@ -21,4 +21,9 @@ public class Constants {
     public static final int LOGIN = 0;
     public static final int LOGOUT = 1;
     public static final int MESSAGE_TYPE = 2;
+
+    public static final int CLIENT_MESSAGE = 0;
+    public static final int WORK_MESSAGE = 1;
+
+
 }

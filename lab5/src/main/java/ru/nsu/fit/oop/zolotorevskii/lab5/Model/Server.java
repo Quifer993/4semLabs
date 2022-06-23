@@ -12,8 +12,6 @@ import java.net.Socket;
 
 import java.net.*;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static ru.nsu.fit.oop.zolotorevskii.lab5.Constants.*;
 
@@ -22,7 +20,7 @@ public class Server {
     //newFixedThreadPool
     List<String> listUsers = new ArrayList<>();
     List<Socket> listSockets = new ArrayList<>();
-    List<PairClientMessage> historyMes = new ArrayList<>();
+    List<PartsClientMessage> historyMes = new ArrayList<>();
 
     Map<Socket, String> mapUsers = new HashMap<Socket, String>();
     boolean serverWorking;
@@ -99,6 +97,7 @@ public class Server {
                         System.out.println("\nREAD from clientDialog message - " + entry);
                         MessageServer messageServer;
                         String nickClient = messageUser.getName();
+                        String messageText = messageUser.getMessageText();
                         if (messageUser.getTypeMessage() == LOGIN) {
                             if (listUsers.contains(nickClient)) {
                                 messageServer = new MessageServer(LOGIN_ERROR, nickClient, listUsers, "" , null);
@@ -107,17 +106,16 @@ public class Server {
                             }
                             else{
                                 mapUsers.put(socketClient, nickClient);
-//                                historyMes.add(new PairClientMessage(nickClient, messageText));
-
-//                                messageServer = new MessageServer(LOGIN_SUCCESS, nickClient, listUsers);
                                 listUsers.add(nickClient);
-
+                                historyMes.add(new PartsClientMessage(nickClient,
+                                        "Клиент " + nickClient + TEXT_NEW_CLIENT,
+                                        WORK_MESSAGE));
                                 sendMesAllUsers(gson, LOGIN_SUCCESS, nickClient, "", historyMes);
                             }
                         }
                         else if(messageUser.getTypeMessage() == MESSAGE_TYPE){
-                            String messageText = messageUser.getMessageText();
-                            historyMes.add(new PairClientMessage(nickClient, messageText));
+
+                            historyMes.add(new PartsClientMessage(nickClient, messageText, CLIENT_MESSAGE));
                             sendMesAllUsers(gson, MESSAGE_TYPE, nickClient, messageText,null);
                             System.out.println("Клиент " + nickClient + " отправил всем сообщение");
                         }
@@ -127,7 +125,9 @@ public class Server {
                                 listSockets.remove(socketClient);
                                 mapUsers.remove(socketClient);
                                 listUsers.remove(nickClient);
-
+                                historyMes.add(new PartsClientMessage(nickClient,
+                                        "Клиент " + nickClient + TEXT_LOGOUT_CLIENT,
+                                        WORK_MESSAGE));
                                 sendMesAllUsers(gson, LOGOUT, nickClient, "", null);
                                 socketClient.close();
                                 System.out.println("Клиент " + nickClient + TEXT_LOGOUT_CLIENT);
@@ -138,7 +138,6 @@ public class Server {
 
                             in.close();
                             out.close();
-//                            continue;
                         }
 
                         System.out.println("Thread " + numberThread + " end Work with message from client correct!");
@@ -149,7 +148,11 @@ public class Server {
             }
         }
 
-        private void sendMesAllUsers(Gson gson, int typeMes, String nickClient, String messageText, List<PairClientMessage> listPair) {
+        private void sendMesAllUsers(Gson gson,
+                                     int typeMes,
+                                     String nickClient,
+                                     String messageText,
+                                     List<PartsClientMessage> listPair) {
             MessageServer messageServer = new MessageServer(typeMes, nickClient, listUsers, messageText, listPair);
             String messageStr = gson.toJson(messageServer);
             for(int i = 0; i < listSockets.size(); i++){
@@ -160,7 +163,9 @@ public class Server {
                     out.writeUTF(messageStr);
                     out.flush();
                 }catch (IOException e) {
-                    System.out.println("send to socket: " + socket.getInetAddress() + " - error. Delete this socket from list!");
+                    System.out.println("send to socket: " +
+                            socket.getInetAddress() +
+                            " - error. Delete this socket from list!");
                     listSockets.remove(socket);
                     listUsers.remove(mapUsers.get(socket));
                     mapUsers.remove(socket);
