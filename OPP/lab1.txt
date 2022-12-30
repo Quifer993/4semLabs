@@ -1,0 +1,233 @@
+#include <malloc.h>
+#include <math.h>
+#include <float.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+
+
+void matrixPadding(double* matrix, int size, int rank, int sizePart) {//n 
+	for (int i = 0; i < sizePart; i++) {
+		for (int j = 0; j < size; j++) {
+			int indexMatrix = i * size + j;
+			if ((rank * sizePart + i) == j) {
+				matrix[indexMatrix] = 2.0;
+			}
+			else {
+				matrix[indexMatrix] = 1.0;
+			}
+		}
+	}
+}
+
+
+void vectorPadding(double* vector, int size, double value) {
+	for (int i = 0; i < size; i++) {
+		vector[i] = value;
+	}
+}
+
+
+void vectorMinusVector(double* resVect, double* vector1, double* vector2, int size) {
+	for (int i = 0; i < size; i++) {
+		resVect[i] = vector1[i] - vector2[i];
+	}
+}
+
+
+void multVectInConst(double* vector, double t, int size) {
+	for (int i = 0; i < size; i++) {
+		vector[i] = vector[i] * t;
+	}
+}
+
+
+void matrixMultVector(double* outVector, double* inMatrix, double* vector, int size, int height, int length, int start) {
+	//printf("%d - length, %d - start, %d - rank,\n", length, start, rank );
+	int finish = start + length;
+	for (int i = 0; i < height; i++) {
+		double sum = 0;
+		for (int j = start; j < finish; j++) {
+			sum += inMatrix[i * size + j] * vector[j - start];
+		}
+		outVector[i] += sum;
+	}
+}
+
+
+double quadrSum(double* vector, int size) {
+	double sum = 0;
+	for (int i = 0; i < size; i++) {
+		sum += vector[i] * vector[i];
+	}
+	return sum;
+}
+
+
+void copyVect(double* vectorGive, double* vectorGet, int size) {
+	for (int i = 0; i < size; i++) {
+		vectorGet[i] = vectorGive[i];
+	}
+}
+
+
+int main(int argc, char* argv[]) {
+	//int lengthMatrix = 16;
+	int lengthMatrix = 8000;
+	double barier = 0.00001;
+	double t = 0.00001;
+
+
+	MPI_Init(&argc, &argv);
+	int size, rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+	int* sizePart = calloc(sizeof(int), size);
+	if (sizePart == NULL) {
+		printf("sizePart");
+		return 1;
+	}	
+	
+	int* shiftStart = calloc(sizeof(int), size);
+	if (shiftStart == NULL) {
+		printf("shiftStart");
+		return 1;
+	}
+
+	int startLength = lengthMatrix / size;
+	int modulo = lengthMatrix - size * startLength;
+
+
+	if (modulo == 0) {
+		sizePart[0] = startLength;
+	}
+	else {
+		sizePart[0] = startLength + 1;
+	}
+
+	shiftStart[0] = 0;
+	
+	int condition = 1;
+
+	for (int i = 1; i < size; i++) {
+		if (i >= modulo) {
+			condition = 0;
+		}
+		sizePart[i] = startLength + condition;
+		shiftStart[i] = sizePart[i - 1] + shiftStart[i - 1];
+	}
+
+
+	double* x = calloc(sizeof(double), startLength + 1);
+	if (x == NULL) {
+		printf("x");
+		return 1;
+	}
+
+	double* b = calloc(sizeof(double), sizePart[rank]);
+	if (b == NULL) {
+		printf("b");
+		return 1;
+	}
+
+	double* matrix = calloc(sizeof(double), lengthMatrix * sizePart[rank]);
+	if (matrix == NULL) {
+		printf("matrix");
+		return 1;
+	}
+
+	double* outAx = calloc(sizeof(double), sizePart[rank]);
+	if (outAx == NULL) {
+		printf("outAx");
+		return 1;
+	}
+
+	double* partsSumX = calloc(sizeof(double), size);
+	if (partsSumX == NULL) {
+		printf("outAx");
+		return 1;
+	}
+
+	double* partsSumB = calloc(sizeof(double), size);
+	if (partsSumB == NULL) {
+		printf("outAx");
+		return 1;
+	}
+
+	double value = lengthMatrix + 1;
+
+	matrixPadding(matrix, lengthMatrix, rank, sizePart[rank]);
+	vectorPadding(x, startLength + 1, 0);
+	vectorPadding(b, sizePart[rank], value);
+
+	
+	double shiftBefore = DBL_MAX;
+
+	double e = 1;
+	int i = 0;
+	double sumPartX[1];
+	double sumPartB[1];
+	double sumB = 0;
+
+	double startTime = MPI_Wtime();
+
+	sumPartB[0] = quadrSum(b, sizePart[rank]);
+	MPI_Allreduce(sumPartB, partsSumB, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+
+	while (1) {
+		vectorPadding(outAx, sizePart[rank], 0);
+		double sumX = 0;
+
+		for (int j = 0; j < size; j++) {
+			//printf("%d\n", j);
+			matrixMultVector(outAx, matrix, x, lengthMatrix, sizePart[rank]/*height*/, 
+				sizePart[(rank + j) % size], shiftStart[(rank + j) % size]);
+			MPI_Sendrecv_replace(x, startLength + 1, MPI_DOUBLE, (rank + size - 1) % size, 0,
+				(rank + 1) % size, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		}
+		
+		vectorMinusVector(outAx, outAx, b, sizePart[rank]);
+		sumPartX[0] = quadrSum(outAx, sizePart[rank]);
+		multVectInConst(outAx, t, sizePart[rank]);
+		vectorMinusVector(outAx, x, outAx, sizePart[rank]);
+
+		copyVect(outAx, x, sizePart[rank]);
+
+		MPI_Allreduce(sumPartX, partsSumX, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
+
+		//printf("On iterationffff %lf, %d\n", sumPartX[0], rank);
+		//MPI_Allgather(sumPartX, 1, MPI_DOUBLE, partsSumX, 1, MPI_DOUBLE, MPI_COMM_WORLD);
+		//for (int i = 0; i < size; i++) {
+		//	sumX += partsSumX[i];
+		//}
+		double shift = partsSumX[0] / partsSumB[0];
+		if (shift < barier * barier) {
+			if (rank == 0) printf("Successed! on iteration %d\n", i);
+			e = shift;
+			break;
+		}
+
+
+
+		i++;
+	}
+
+
+	double endTime = MPI_Wtime();
+	if (rank == 0) {
+		printf("Programm took %f seconds\n", endTime - startTime);
+	}
+
+	free(sizePart);
+	free(shiftStart);
+	free(partsSumX);
+	free(partsSumB);
+	free(matrix);
+	free(outAx);
+	free(b);
+	free(x);
+
+	MPI_Finalize();
+	return 0;
+}
