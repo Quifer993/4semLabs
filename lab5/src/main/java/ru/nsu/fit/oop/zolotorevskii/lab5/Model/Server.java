@@ -89,7 +89,9 @@ public class Server {
                         DataInputStream in = new DataInputStream(socketClient.getInputStream());
                         DataOutputStream out = new DataOutputStream(socketClient.getOutputStream());
 
-                        if(in.available() == 0){ continue;}
+                        if (in.available() == 0){
+                            continue;
+                        }
 
                         String entry = in.readUTF();
                         Gson gson = new Gson();
@@ -119,9 +121,9 @@ public class Server {
                             sendMesAllUsers(gson, MESSAGE_TYPE, nickClient, messageText,null);
                             System.out.println("Клиент " + nickClient + " отправил всем сообщение");
                         }
-                        else if(messageUser.getTypeMessage() == LOGOUT){
+                        else if (messageUser.getTypeMessage() == LOGOUT) {
 
-                            try{
+                            try {
                                 listSockets.remove(socketClient);
                                 mapUsers.remove(socketClient);
                                 listUsers.remove(nickClient);
@@ -131,7 +133,7 @@ public class Server {
                                 sendMesAllUsers(gson, LOGOUT, nickClient, "", null);
                                 socketClient.close();
                                 System.out.println("Клиент " + nickClient + TEXT_LOGOUT_CLIENT);
-                            }catch(NullPointerException alreadyDel){
+                            } catch(NullPointerException alreadyDel){
                                 System.out.println("Socket" + socketClient.getInetAddress() + ":"
                                         + socketClient.getPort() + " already closed!");
                             }
@@ -155,14 +157,14 @@ public class Server {
                                      List<PartsClientMessage> listPair) {
             MessageServer messageServer = new MessageServer(typeMes, nickClient, listUsers, messageText, listPair);
             String messageStr = gson.toJson(messageServer);
-            for(int i = 0; i < listSockets.size(); i++){
+            for (int i = 0; i < listSockets.size(); i++) {
                 Socket socket = listSockets.get(i);
-                try{
+                try {
                     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                     Sending.sendMessage(out, messageStr);
                     out.writeUTF(messageStr);
                     out.flush();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println("send to socket: " +
                             socket.getInetAddress() +
                             " - error. Delete this socket from list!");
